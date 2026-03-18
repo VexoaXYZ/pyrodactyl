@@ -81,7 +81,7 @@ class AuthTokenController extends Controller
 
         return new JsonResponse([
             'data' => [
-                'token' => $token->plainTextToken,
+                'token' => $token->accessToken->identifier . $token->plainTextToken,
                 'token_id' => $token->accessToken->identifier,
                 'user' => [
                     'id' => $user->id,
