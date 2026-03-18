@@ -3,12 +3,14 @@
 namespace Pterodactyl\Http\Controllers\Api\Client;
 
 use Pterodactyl\Models\User;
+use Pterodactyl\Models\ApiKey;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Pterodactyl\Facades\Activity;
 use PragmaRX\Google2FA\Google2FA;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Pterodactyl\Http\Controllers\Controller;
+use Pterodactyl\Services\Acl\Api\AdminAcl;
 
 class AuthTokenController extends Controller
 {
@@ -19,12 +21,19 @@ class AuthTokenController extends Controller
 
     /**
      * Exchange email/username + password for an API bearer token.
+     * Requires a valid Application API key with auth_tokens permission.
      * Supports 2FA via authentication_code parameter.
      *
      * POST /api/auth/token
      */
     public function create(Request $request): JsonResponse
     {
+        // Verify Application API key from Authorization header
+        $apiKey = $this->validateApplicationKey($request);
+        if ($apiKey instanceof JsonResponse) {
+            return $apiKey;
+        }
+
         $request->validate([
             'user' => 'required|string',
             'password' => 'required|string',
@@ -86,5 +95,43 @@ class AuthTokenController extends Controller
                 ],
             ],
         ]);
+    }
+
+    /**
+     * Validate the Application API key from the Authorization header.
+     * Returns the ApiKey model on success, or a JsonResponse error.
+     */
+    private function validateApplicationKey(Request $request): ApiKey|JsonResponse
+    {
+        $bearer = $request->bearerToken();
+
+        if (empty($bearer)) {
+            return new JsonResponse([
+                'error' => 'MissingApiKey',
+                'message' => 'An Application API key is required. Pass it as a Bearer token.',
+            ], 401);
+        }
+
+        $apiKey = ApiKey::findToken($bearer);
+
+        if (!$apiKey || $apiKey->key_type !== ApiKey::TYPE_APPLICATION) {
+            return new JsonResponse([
+                'error' => 'InvalidApiKey',
+                'message' => 'The provided API key is invalid or not an Application API key.',
+            ], 401);
+        }
+
+        // Check that this key has auth_tokens permission
+        if (!AdminAcl::check($apiKey, AdminAcl::RESOURCE_AUTH_TOKENS, AdminAcl::WRITE)) {
+            return new JsonResponse([
+                'error' => 'InsufficientPermission',
+                'message' => 'This API key does not have permission to issue auth tokens.',
+            ], 403);
+        }
+
+        // Update last used timestamp
+        $apiKey->update(['last_used_at' => now()]);
+
+        return $apiKey;
     }
 }

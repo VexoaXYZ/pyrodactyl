@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $r_eggs
  * @property int $r_database_hosts
  * @property int $r_server_databases
+ * @property int $r_auth_tokens
  * @property User $tokenable
  * @property User $user
  *
@@ -115,6 +116,7 @@ class ApiKey extends Model
     'r_' . AdminAcl::RESOURCE_NESTS => 'int',
     'r_' . AdminAcl::RESOURCE_NODES => 'int',
     'r_' . AdminAcl::RESOURCE_SERVERS => 'int',
+    'r_' . AdminAcl::RESOURCE_AUTH_TOKENS => 'int',
   ];
 
   /**
@@ -157,6 +159,7 @@ class ApiKey extends Model
     'r_' . AdminAcl::RESOURCE_NESTS => 'integer|min:0|max:3',
     'r_' . AdminAcl::RESOURCE_NODES => 'integer|min:0|max:3',
     'r_' . AdminAcl::RESOURCE_SERVERS => 'integer|min:0|max:3',
+    'r_' . AdminAcl::RESOURCE_AUTH_TOKENS => 'integer|min:0|max:3',
   ];
 
   /**
