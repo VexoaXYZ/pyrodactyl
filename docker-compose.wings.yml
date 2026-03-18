@@ -1,0 +1,20 @@
+services:
+  wings:
+    image: ghcr.io/pterodactyl/wings:latest
+    container_name: pterodactyl-wings
+    restart: unless-stopped
+    ports:
+      - "8443:8443"
+      - "2022:2022"
+    environment:
+      - TZ=UTC
+      - WINGS_UID=0
+      - WINGS_GID=0
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./wings-data/etc:/etc/pterodactyl"
+      - "./wings-data/lib:/var/lib/pterodactyl"
+      - "./wings-data/log:/var/log/pterodactyl"
+      - "./wings-data/tmp:/tmp/pterodactyl"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
