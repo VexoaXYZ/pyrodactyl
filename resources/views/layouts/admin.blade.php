@@ -116,6 +116,11 @@
               <i class="bi bi-database-fill"></i> <span>Databases</span>
             </a>
           </li>
+          <li class="{{ !starts_with(Route::currentRouteName(), 'admin.webhooks') ?: 'active' }}">
+            <a href="{{ route('admin.webhooks') }}">
+              <i class="bi bi-broadcast"></i> <span>Webhooks</span>
+            </a>
+          </li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.locations') ?: 'active' }}">
             <a href="{{ route('admin.locations') }}">
               <i class="bi bi-globe-americas"></i> <span>Locations</span>

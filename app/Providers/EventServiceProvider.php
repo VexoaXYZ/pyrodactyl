@@ -3,11 +3,13 @@
 namespace Pterodactyl\Providers;
 
 use Pterodactyl\Models\User;
+use Pterodactyl\Models\Server;
 use Pterodactyl\Models\Subuser;
 use Pterodactyl\Models\EggVariable;
 use Pterodactyl\Observers\UserObserver;
 use Pterodactyl\Observers\SubuserObserver;
 use Pterodactyl\Observers\EggVariableObserver;
+use Pterodactyl\Observers\ServerWebhookObserver;
 use Pterodactyl\Listeners\Auth\AuthenticationListener;
 use Pterodactyl\Events\Server\Installed as ServerInstalledEvent;
 use Pterodactyl\Notifications\ServerInstalled as ServerInstalledNotification;
@@ -36,5 +38,6 @@ class EventServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Subuser::observe(SubuserObserver::class);
         EggVariable::observe(EggVariableObserver::class);
+        Server::observe(ServerWebhookObserver::class);
     }
 }

@@ -41,6 +41,24 @@ Route::group(['prefix' => 'locations'], function () {
 
 /*
 |--------------------------------------------------------------------------
+| Webhook Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /admin/webhooks
+|
+*/
+Route::group(['prefix' => 'webhooks'], function () {
+    Route::get('/', [Admin\WebhookController::class, 'index'])->name('admin.webhooks');
+    Route::get('/new', [Admin\WebhookController::class, 'create'])->name('admin.webhooks.new');
+    Route::get('/view/{webhook}', [Admin\WebhookController::class, 'view'])->name('admin.webhooks.view');
+
+    Route::post('/', [Admin\WebhookController::class, 'store']);
+    Route::patch('/view/{webhook}', [Admin\WebhookController::class, 'update']);
+    Route::delete('/view/{webhook}', [Admin\WebhookController::class, 'delete']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Database Controller Routes
 |--------------------------------------------------------------------------
 |

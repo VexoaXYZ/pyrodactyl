@@ -40,5 +40,9 @@ class Kernel extends ConsoleKernel
         if (config('activity.prune_days')) {
             $schedule->command(PruneCommand::class, ['--model' => [ActivityLog::class]])->daily();
         }
+
+        if (config('panel.webhook.prune_days')) {
+            $schedule->command('p:webhooks:prune')->daily();
+        }
     }
 }

@@ -124,6 +124,24 @@ Route::group(['prefix' => '/servers'], function () {
 
 /*
 |--------------------------------------------------------------------------
+| Webhook Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /api/application/webhooks
+|
+*/
+Route::group(['prefix' => '/webhooks'], function () {
+    Route::get('/', [Application\Webhooks\WebhookConfigurationController::class, 'index'])->name('api.application.webhooks');
+    Route::get('/{webhook:id}', [Application\Webhooks\WebhookConfigurationController::class, 'view'])->name('api.application.webhooks.view');
+
+    Route::post('/', [Application\Webhooks\WebhookConfigurationController::class, 'store']);
+    Route::patch('/{webhook:id}', [Application\Webhooks\WebhookConfigurationController::class, 'update']);
+
+    Route::delete('/{webhook:id}', [Application\Webhooks\WebhookConfigurationController::class, 'delete']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Nest Controller Routes
 |--------------------------------------------------------------------------
 |
