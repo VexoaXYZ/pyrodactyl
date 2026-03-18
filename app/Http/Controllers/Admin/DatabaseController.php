@@ -75,9 +75,8 @@ class DatabaseController extends Controller
             $host = $this->creationService->handle($request->normalize());
         } catch (\Exception $exception) {
             if ($exception instanceof \PDOException || $exception->getPrevious() instanceof \PDOException) {
-                $this->alert->danger(
-                    sprintf('There was an error while trying to connect to the host or while executing a query: "%s"', $exception->getMessage())
-                )->flash();
+                Log::error('Database host creation failed', ['error' => $exception->getMessage()]);
+                $this->alert->danger('There was an error while trying to connect to the database host. Please verify the credentials and try again.')->flash();
 
                 return redirect()->route('admin.databases')->withInput($request->validated());
             } else {
@@ -106,9 +105,8 @@ class DatabaseController extends Controller
             // Catch any SQL related exceptions and display them back to the user, otherwise just
             // throw the exception like normal and move on with it.
             if ($exception instanceof \PDOException || $exception->getPrevious() instanceof \PDOException) {
-                $this->alert->danger(
-                    sprintf('There was an error while trying to connect to the host or while executing a query: "%s"', $exception->getMessage())
-                )->flash();
+                Log::error('Database host update failed', ['host' => $host->id, 'error' => $exception->getMessage()]);
+                $this->alert->danger('There was an error while trying to connect to the database host. Please verify the credentials and try again.')->flash();
 
                 return $redirect->withInput($request->normalize());
             } else {
