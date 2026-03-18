@@ -110,6 +110,11 @@
               <i class="bi bi-globe"></i> <span>Application API</span>
             </a>
           </li>
+          <li class="{{ !starts_with(Route::currentRouteName(), 'admin.health') ?: 'active' }}">
+            <a href="{{ route('admin.health')}}">
+              <i class="bi bi-heart-pulse-fill"></i> <span>Health</span>
+            </a>
+          </li>
           <li class="header">MANAGEMENT</li>
           <li class="{{ !starts_with(Route::currentRouteName(), 'admin.databases') ?: 'active' }}">
             <a href="{{ route('admin.databases') }}">

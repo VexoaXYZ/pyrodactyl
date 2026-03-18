@@ -199,6 +199,7 @@ return [
     Pterodactyl\Providers\CaptchaServiceProvider::class,
     Pterodactyl\Providers\EventServiceProvider::class,
     Pterodactyl\Providers\HashidsServiceProvider::class,
+    Pterodactyl\Providers\HealthServiceProvider::class,
     Pterodactyl\Providers\ObserverServiceProvider::class,
     Pterodactyl\Providers\RouteServiceProvider::class,
     Pterodactyl\Providers\RepositoryServiceProvider::class,

@@ -8,6 +8,16 @@ Route::get('/', [Admin\BaseController::class, 'index'])->name('admin.index');
 
 /*
 |--------------------------------------------------------------------------
+| Health Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /admin/health
+|
+*/
+Route::get('/health', [Admin\HealthController::class, 'index'])->name('admin.health');
+
+/*
+|--------------------------------------------------------------------------
 | Location Controller Routes
 |--------------------------------------------------------------------------
 |

@@ -13,5 +13,9 @@ Route::get('/locales/locale.json', Base\LocaleController::class)
   ->withoutMiddleware(['auth', RequireTwoFactorAuthentication::class])
   ->where('namespace', '.*');
 
+Route::get('/api/health', [\Pterodactyl\Http\Controllers\Admin\HealthController::class, 'api'])
+  ->withoutMiddleware(['auth', RequireTwoFactorAuthentication::class])
+  ->name('api.health');
+
 Route::get('/{react}', [Base\IndexController::class, 'index'])
   ->where('react', '^(?!(\/)?(api|auth|admin|daemon)).+');
