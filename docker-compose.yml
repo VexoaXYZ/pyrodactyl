@@ -14,9 +14,7 @@ services:
     image: redis:alpine
     restart: always
   panel:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/vexoaxyz/infrahost-panel:latest
     restart: always
     links:
       - database
