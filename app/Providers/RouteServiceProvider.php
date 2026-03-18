@@ -63,6 +63,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('/api/remote')
                 ->scopeBindings()
                 ->group(base_path('routes/api-remote.php'));
+
+            // Public API auth endpoint — no auth middleware, just rate limiting
+            Route::middleware(['api', 'throttle:authentication'])
+                ->prefix('/api/auth')
+                ->group(base_path('routes/api-auth.php'));
         });
     }
 
